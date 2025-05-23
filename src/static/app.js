@@ -19,12 +19,28 @@ document.addEventListener("DOMContentLoaded", () => {
         activityCard.className = "activity-card";
 
         const spotsLeft = details.max_participants - details.participants.length;
+        
+        // Create participants HTML - show list if there are participants, otherwise show a message
+        let participantsHTML = '';
+        if (details.participants && details.participants.length > 0) {
+          participantsHTML = `
+            <p><strong>Current Participants:</strong></p>
+            <ul class="participants-list">
+              ${details.participants.map(participant => `<li>${escapeHTML(participant)}</li>`).join('')}
+            </ul>
+          `;
+        } else {
+          participantsHTML = `<p><strong>Current Participants:</strong> No one has signed up yet!</p>`;
+        }
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <div class="participants-section">
+            ${participantsHTML}
+          </div>
         `;
 
         activitiesList.appendChild(activityCard);
